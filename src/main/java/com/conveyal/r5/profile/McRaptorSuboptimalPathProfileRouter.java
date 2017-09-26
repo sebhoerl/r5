@@ -133,8 +133,11 @@ public class McRaptorSuboptimalPathProfileRouter {
         // This makes it truly random for all practical purposes. To make results repeatable from one run to the next,
         // seed with some characteristic of the request itself, e.g. (int) (request.fromLat * 1e9)
         MersenneTwister mersenneTwister = new MersenneTwister();
+        
+        int departureTime = request.fromTime;
+        int n = 0;
 
-        for (int departureTime = request.toTime - 60, n = 0; departureTime > request.fromTime; departureTime -= mersenneTwister.nextInt(maxSamplingFrequency), n++) {
+        //for (int departureTime = request.toTime - 60, n = 0; departureTime > request.fromTime; departureTime -= mersenneTwister.nextInt(maxSamplingFrequency), n++) {
 
             // we're not using range-raptor so it's safe to change the schedule on each search
             offsets.randomize();
@@ -170,7 +173,6 @@ public class McRaptorSuboptimalPathProfileRouter {
 
             if (n % 15 == 0)
                 LOG.info("minute {}, {} rounds", n, round);
-        }
 
         // DEBUG: print hash table performance
 //        LOG.info("Hash performance: {} hashes, {} states", hashes.size(), keys.size());

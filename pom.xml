@@ -8,7 +8,7 @@
 
   <groupId>com.conveyal</groupId>
   <artifactId>r5</artifactId>
-  <version>3.1.0-matsim</version>
+  <version>3.1.0-matsim-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <licenses>
@@ -58,12 +58,21 @@
     <!-- We are using Sonatype Nexus Staging instead of Maven Release plugin.
          Only a snapshot repo should be configured. Releases are done from that snapshot staging repo. -->
     <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <id>packagecloud-shoerl</id>
+      <url>packagecloud+https://packagecloud.io/shoerl/matsim</url>
     </snapshotRepository>
   </distributionManagement>
 
   <build>
+
+
+      <extensions>
+    <extension>
+      <groupId>io.packagecloud.maven.wagon</groupId>
+      <artifactId>maven-packagecloud-wagon</artifactId>
+      <version>0.0.6</version>
+    </extension>
+  </extensions>
 
     <resources>
       <resource>
@@ -150,19 +159,7 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <!-- Recommended way to deploy to OSSRH -->
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.7</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-          <!-- Release versions will be synced to Maven Central automatically. -->
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
+
 
       <plugin>
         <!-- Allow attaching Javadoc during releases -->
@@ -205,22 +202,6 @@
             <id>attach-sources</id>
             <goals>
               <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>1.5</version>
-        <executions>
-          <execution>
-            <id>sign-artifacts</id>
-            <!-- We sign in the verify phase, which means it will happen for install and deploy but not package. -->
-            <phase>verify</phase>
-            <goals>
-              <goal>sign</goal>
             </goals>
           </execution>
         </executions>
